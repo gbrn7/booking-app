@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
             GroupClassTypeSeeder::class,
             ClassesSeeder::class,
             ScheduleSeeder::class,
+            ScheduleDetailSeeder::class,
+            PackagesSeeder::class,
         ]);
     }
 }

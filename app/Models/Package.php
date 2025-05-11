@@ -5,24 +5,49 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Package extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         "class_id",
         "number_of_session",
         "price",
         "is_trial",
-        "valid_until",
+        "duration",
+        "duration_unit",
     ];
 
     public function classes(): BelongsTo
     {
-        return $this->belongsTo('classes', 'class_id');
+        return $this->belongsTo(Classes::class, 'class_id');
     }
 
     public function packageTransaction(): HasMany
     {
         return $this->hasMany(PackageTransaction::class, 'package_id');
+    }
+
+    public function localDurationUnit(): string
+    {
+        switch ($this->duration_unit) {
+            case 'day':
+                return "Hari";
+                break;
+            case 'week':
+                return "Minggu";
+                break;
+            case 'month':
+                return "Bulan";
+                break;
+            case 'year':
+                return "Tahun";
+                break;
+            default:
+                return "Minggu";
+                break;
+        }
     }
 }

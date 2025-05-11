@@ -15,12 +15,12 @@ class GroupClassTypeSeeder extends Seeder
     {
         GroupClassType::insert([
             [
-                'name' => 'group',
+                'name' => 'Public',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'name' => 'private',
+                'name' => 'Private',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

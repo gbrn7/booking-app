@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('packages', function (Blueprint $table) {
             $table->id();
-            $table->tinyInteger('number_of_session');
+            $table->foreignId('class_id')->constrained('classes');
+            $table->integer('number_of_session');
             $table->float('price');
-            $table->boolean('is_trial');
-            $table->date('valid_until');
+            $table->boolean('is_trial')->default(false);
+            $table->integer('duration');
+            $table->enum('duration_unit', ['day', 'week', 'month', 'year']);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

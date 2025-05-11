@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('package_transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('package_id')->constrained('packages', 'id');
-            $table->string('name');
+            $table->string('customer_name');
+            $table->string('class_name');
             $table->string('phone_num');
             $table->string('email')->nullable();
-            $table->string('class_name');
             $table->string('transaction_code');
             $table->enum('payment_status', ['pending', 'failure', 'success']);
             $table->string('instructure_name');
@@ -26,7 +26,10 @@ return new class extends Migration
             $table->string('group_class_type');
             $table->string('class_type');
             $table->boolean('is_trial');
+            $table->date('valid_until')->nullable();
             $table->string('redeem_code');
+            $table->integer('duration');
+            $table->enum('duration_unit', ['day', 'week', 'month', 'year']);
             $table->timestamps();
         });
     }

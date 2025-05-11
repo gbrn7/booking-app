@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('package_schedules', function (Blueprint $table) {
             $table->id();
             $table->foreignId('package_transaction_id')->constrained('package_transactions');
-            $table->date("day");
-            $table->time("schedule_time");
+            $table->foreignId('schedule_detail_id')->constrained('schedule_details');
             $table->timestamps();
         });
     }

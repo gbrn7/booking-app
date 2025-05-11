@@ -17,7 +17,7 @@ class ClassesSeeder extends Seeder
             [
                 'group_class_type_id' => 1,
                 'class_type_id' => 1,
-                'name' => "Pilated Reformer and/or Tower",
+                'name' => "Pilates Reformer and/or Tower",
                 'instructure_name' => "Nana",
             ],
             [

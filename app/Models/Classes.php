@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Classes extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'group_class_type_id',
         'class_type_id',
@@ -22,6 +25,6 @@ class Classes extends Model
 
     public function groupClassType(): BelongsTo
     {
-        return $this->belongsTo(GroupClassType::class, 'group_class_type', 'id');
+        return $this->belongsTo(GroupClassType::class, 'group_class_type_id', 'id');
     }
 }

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('instructure_name');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

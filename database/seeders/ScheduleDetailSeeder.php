@@ -19,7 +19,19 @@ class ScheduleDetailSeeder extends Seeder
                 'schedule_id' => 1,
                 'class_id' => 1,
                 'quota' => 10,
-                'schedule_time' => Carbon::now(),
+                'schedule_time' => Carbon::now()->format('H:i'),
+            ],
+            [
+                'schedule_id' => 1,
+                'class_id' => 1,
+                'quota' => 10,
+                'schedule_time' => Carbon::now()->addHour(1)->format('H:i'),
+            ],
+            [
+                'schedule_id' => 1,
+                'class_id' => 2,
+                'quota' => 10,
+                'schedule_time' => Carbon::now()->subHour(2)->format('H:i'),
             ],
         ]);
     }

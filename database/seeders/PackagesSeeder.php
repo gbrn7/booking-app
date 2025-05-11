@@ -16,10 +16,11 @@ class PackagesSeeder extends Seeder
         Package::insert(
             [
                 "class_id" => 1,
-                "number_of_session" => 1,
-                "price" => 150000,
-                "is_trial" => true,
-                "valid_until" => Carbon::now()->addWeek(2),
+                "number_of_session" => 2,
+                "price" => 200000,
+                "is_trial" => false,
+                "duration" => 1,
+                "duration_unit" => 'week',
             ],
         );
     }
