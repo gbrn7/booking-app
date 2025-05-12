@@ -1,22 +1,19 @@
 <?php
 
-namespace App\Filament\Resources\ScheduleTemplateResource\RelationManagers;
+namespace App\Filament\Resources\ScheduleResource\RelationManagers;
 
-use App\Models\Classes;
+use App\Models\ScheduleTemplate;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ScheduleTemplateDetailsRelationManager extends RelationManager
+class ScheduleDetailsRelationManager extends RelationManager
 {
-    protected static string $relationship = 'scheduleTemplateDetails';
-
-    public function getTableHeading(): string
-    {
-        return 'Jadwal Template'; // Custom heading
-    }
+    protected static string $relationship = 'scheduleDetails';
 
     public function form(Form $form): Form
     {
@@ -24,16 +21,7 @@ class ScheduleTemplateDetailsRelationManager extends RelationManager
             ->schema([
                 Forms\Components\Select::make('class_id')
                     ->required()
-                    ->options(function () {
-                        return Classes::with(['classType', 'groupClassType'])
-                            ->get()
-                            ->mapWithKeys(function ($class) {
-                                return [
-                                    $class->id => $class->name . ' - ' . $class->groupClassType->name . ' - ' .
-                                        $class->classType->name
-                                ];
-                            });
-                    })
+                    ->relationship(name: 'classes', titleAttribute: 'name')
                     ->searchable()
                     ->preload()
                     ->label('Kelas'),
@@ -68,8 +56,7 @@ class ScheduleTemplateDetailsRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
-                    ->label('Tambah Jadwal Template')
-                    ->modalHeading('Tambah Jadwal Template'),
+                    ->label('Tambah Detail Jadwal'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -79,7 +66,6 @@ class ScheduleTemplateDetailsRelationManager extends RelationManager
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ])
-            ->emptyStateHeading('Jadwal tidak ditemukan');
+            ]);
     }
 }

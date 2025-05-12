@@ -18,6 +18,7 @@ return new class extends Migration
             $table->tinyInteger('quota');
             $table->time('schedule_time');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

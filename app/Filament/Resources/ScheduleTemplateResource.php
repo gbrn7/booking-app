@@ -31,6 +31,7 @@ class ScheduleTemplateResource extends Resource
                     ->required()
                     ->placeholder('Masukkan nama template jadwal, ex: Senin')
                     ->maxLength(255)
+                    ->columnSpanFull()
                     ->label('Nama Template'),
             ]);
     }

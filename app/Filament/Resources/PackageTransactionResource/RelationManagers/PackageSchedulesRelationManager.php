@@ -88,6 +88,7 @@ class PackageSchedulesRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\CreateAction::make()
                     ->label('Tambah Jadwal')
+                    ->modalHeading('Tambah Jadwal Member')
                     ->using(function (array $data, string $model, Tables\Actions\CreateAction $action): PackageSchedule {
                         $packageTransaction = PackageTransaction::find($this->ownerRecord->id);
 
@@ -142,18 +143,20 @@ class PackageSchedulesRelationManager extends RelationManager
                     }),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->using(function (PackageSchedule $record, array $data): PackageSchedule {
-                    $oldData = $record->toArray();
+                Tables\Actions\EditAction::make()
+                    ->modalHeading('Edit Jadwal Member')
+                    ->using(function (PackageSchedule $record, array $data): PackageSchedule {
+                        $oldData = $record->toArray();
 
-                    $record->update($data);
+                        $record->update($data);
 
-                    if ($data['schedule_detail_id'] != $oldData['schedule_detail_id']) {
-                        ScheduleDetail::find($oldData['schedule_detail_id'])->increment('quota');
-                        ScheduleDetail::find($data['schedule_detail_id'])->decrement('quota');
-                    }
+                        if ($data['schedule_detail_id'] != $oldData['schedule_detail_id']) {
+                            ScheduleDetail::find($oldData['schedule_detail_id'])->increment('quota');
+                            ScheduleDetail::find($data['schedule_detail_id'])->decrement('quota');
+                        }
 
-                    return $record;
-                }),
+                        return $record;
+                    }),
             ])
             ->emptyStateHeading('Jadwal tidak ditemukan');
     }

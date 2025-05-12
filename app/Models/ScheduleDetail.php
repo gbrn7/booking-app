@@ -5,9 +5,12 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ScheduleDetail extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         "schedule_id",
         "class_id",
@@ -23,6 +26,11 @@ class ScheduleDetail extends Model
     public function getFormattedTimeAttribute(): string
     {
         return Carbon::parse($this->schedule_time)->format('H:i');
+    }
+
+    public function classes(): BelongsTo
+    {
+        return $this->belongsTo(Classes::class, 'class_id');
     }
 
     protected function casts(): array
