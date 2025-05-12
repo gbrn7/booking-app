@@ -23,11 +23,13 @@ class ClassesResource extends Resource
 {
     protected static ?string $model = Classes::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-table-cells';
 
     protected static ?string $navigationLabel = 'Kelas';
 
     protected static ?string $modelLabel = 'Kelas';
+
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {

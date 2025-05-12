@@ -58,7 +58,8 @@ class AdminPanelProvider extends PanelProvider
                 FilamentEditProfilePlugin::make()->slug('my-profile')
                     ->setTitle('My Profile')
                     ->setNavigationLabel('My Profile')
-                    ->setIcon('heroicon-o-user')
+                    ->setSort(9)
+                    ->setIcon('heroicon-o-user-circle')
             ]);
     }
 }

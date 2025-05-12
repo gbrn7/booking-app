@@ -17,11 +17,13 @@ class PackageTransactionResource extends Resource
 {
     protected static ?string $model = PackageTransaction::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
 
     protected static ?string $navigationLabel = 'Member ';
 
     protected static ?string $modelLabel = 'Member ';
+
+    protected static ?int $navigationSort = 6;
 
     public static function getEloquentQuery(): Builder
     {

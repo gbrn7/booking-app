@@ -21,6 +21,8 @@ class PackageResource extends Resource
 
     protected static ?string $modelLabel = 'Paket Kelas';
 
+    protected static ?int $navigationSort = 3;
+
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->orderBy('id', 'desc');
@@ -103,7 +105,7 @@ class PackageResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->emptyStateHeading('Paket tidak ditemukan');;
+            ->emptyStateHeading('Paket tidak ditemukan');
     }
 
     public static function getRelations(): array

@@ -18,11 +18,13 @@ class ScheduleResource extends Resource
 {
     protected static ?string $model = Schedule::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
 
     protected static ?string $navigationLabel = 'Jadwal Kelas ';
 
     protected static ?string $modelLabel = 'Jadwal Kelas';
+
+    protected static ?int $navigationSort = 4;
 
     public static function getEloquentQuery(): Builder
     {
@@ -74,7 +76,8 @@ class ScheduleResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->emptyStateHeading('Jadwal tidak ditemukan');
     }
 
     public static function getRelations(): array

@@ -16,11 +16,13 @@ class ClassTypeResource extends Resource
 {
     protected static ?string $model = ClassType::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-inbox';
 
     protected static ?string $navigationLabel = 'Jenis Kelas';
 
     protected static ?string $modelLabel = 'Jenis Kelas';
+
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
