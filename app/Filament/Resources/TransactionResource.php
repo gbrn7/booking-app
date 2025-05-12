@@ -97,7 +97,8 @@ class TransactionResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->emptyStateHeading('Transaksi tidak ditemukan');
     }
 
     public static function getRelations(): array

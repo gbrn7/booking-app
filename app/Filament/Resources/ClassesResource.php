@@ -106,7 +106,8 @@ class ClassesResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->emptyStateHeading('Kelas tidak ditemukan');
     }
 
     public static function getRelations(): array

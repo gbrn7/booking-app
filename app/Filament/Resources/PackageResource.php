@@ -102,7 +102,8 @@ class PackageResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->emptyStateHeading('Paket tidak ditemukan');;
     }
 
     public static function getRelations(): array

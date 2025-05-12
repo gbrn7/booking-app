@@ -16,6 +16,6 @@ class ScheduleTemplate extends Model
 
     public function scheduleTemplateDetails(): HasMany
     {
-        return $this->hasMany(ScheduleTemplateDetail::class, 'schedule_template_id', 'id');
+        return $this->hasMany(ScheduleTemplateDetail::class, 'schedule_template_id');
     }
 }

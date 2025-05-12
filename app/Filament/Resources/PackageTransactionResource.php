@@ -92,7 +92,8 @@ class PackageTransactionResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-            ]);
+            ])
+            ->emptyStateHeading('Member tidak ditemukan');
     }
 
     public static function getRelations(): array

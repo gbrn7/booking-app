@@ -21,6 +21,11 @@ class PackageSchedulesRelationManager extends RelationManager
 {
     protected static string $relationship = 'packageSchedules';
 
+    public function getTableHeading(): string
+    {
+        return 'Jadwal Member'; // Custom heading
+    }
+
     public function form(Form $form): Form
     {
         return $form
@@ -82,6 +87,7 @@ class PackageSchedulesRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
+                    ->label('Tambah Jadwal')
                     ->using(function (array $data, string $model, Tables\Actions\CreateAction $action): PackageSchedule {
                         $packageTransaction = PackageTransaction::find($this->ownerRecord->id);
 
@@ -149,6 +155,6 @@ class PackageSchedulesRelationManager extends RelationManager
                     return $record;
                 }),
             ])
-        ;
+            ->emptyStateHeading('Jadwal tidak ditemukan');
     }
 }
