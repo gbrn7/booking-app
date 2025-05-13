@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
+use Midtrans\Snap;
 
 class CustomerController extends Controller
 {
@@ -160,7 +161,7 @@ class CustomerController extends Controller
             ),
         );
 
-        $createMidtransTransaction = \Midtrans\snap::createTransaction($params);
+        $createMidtransTransaction = Snap::createTransaction($params);
         // dd($createMidtransTransaction);
         $midtransRedirectUrl = $createMidtransTransaction->redirect_url;
         // dd($midtransRedirectUrl);
