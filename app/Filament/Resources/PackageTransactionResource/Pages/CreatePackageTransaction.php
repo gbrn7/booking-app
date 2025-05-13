@@ -33,6 +33,7 @@ class CreatePackageTransaction extends CreateRecord
         $mergedData->put("number_of_session_left", $package->number_of_session);
         $mergedData->put("group_class_type", $package->classType->groupClassType->name);
         $mergedData->put("transaction_code", Str::random(12));
+        $mergedData->put("price", $package->price);
         $mergedData->put("redeem_code", Str::random(12));
 
         return $mergedData->toArray();

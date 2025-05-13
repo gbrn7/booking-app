@@ -33,6 +33,7 @@
                 data-schedule-date="{{$schedule->FormattedDate}}"
                 data-schedule-time="{{$scheduleDetail->FormattedTime}}"
                 data-schedule-detail-quota={{$scheduleDetail->quota}}
+                data-schedule-detail-id={{$scheduleDetail->id}}
                 data-title="{{$scheduleDetail->classes->name." -
                 ".$scheduleDetail->classes->classType->groupClassType->name." -
                 By ". $scheduleDetail->classes->instructure_name}}"
@@ -93,8 +94,9 @@
         </li>
       </ul>
       <div class="tab-content" id="myTabContent">
-        <form class="tab-pane overview-wrapper fade show active" id="book-tab-pane" role="tabpanel"
-          aria-labelledby="home-tab" tabindex="0">
+        <form method="post" action={{route('book.class')}} class="tab-pane overview-wrapper fade show active"
+          id="book-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+          @csrf
           <div class="packet-wrapper">
             <div class="packget-card-wrapper d-flex flex-wrap gap-2 mt-2">
               <div class="spinner-border text-secondary" role="status">
@@ -104,18 +106,22 @@
           </div>
 
           <div class="form-wrapper mt-3">
+            <input type="hidden" name="schedule_detail_id" class="schedule-detail-input">
             <div class="wrapper d-flex flex-wrap gap-2 col-12">
               <div class="mb-1 col-12">
                 <label for="exampleInputEmail1" class="form-label">Nama</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
+                <input type="text" name="customer_name" required class="form-control" id="exampleInputEmail1"
+                  aria-describedby="emailHelp" />
               </div>
               <div class="mb-1 col-12">
                 <label for="exampleInputEmail1" class="form-label">Nomor WhatsApp</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
+                <input type="text" name="phone_num" required class="form-control" id="exampleInputEmail1"
+                  aria-describedby="emailHelp" />
               </div>
               <div class="mb-1 col-12">
                 <label for="exampleInputEmail1" class="form-label">Email (Opsional)</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
+                <input type="email" name="email" class="form-control" id="exampleInputEmail1"
+                  aria-describedby="emailHelp" />
               </div>
               <button type="submit"
                 class="bg-pink text-white w-100 p-2 rounded border-0 btn-submit-book fw-medium mt-2 ">
@@ -124,8 +130,11 @@
             </div>
           </div>
         </form>
-        <form class="tab-pane fade document-link-wrapper" data-cy="wrapper-document-link" id="member-tab-pane"
-          role="tabpanel" aria-labelledby="member-tab-pane" tabindex="0">
+        <form method="post" action={{route('redeem.book.code')}} class="tab-pane fade document-link-wrapper"
+          data-cy="wrapper-document-link" id="member-tab-pane" role="tabpanel" aria-labelledby="member-tab-pane"
+          tabindex="0">
+          @csrf
+          @method('put')
           <div class="mb-1 col-12 mt-2">
             <label for="exampleInputEmail1" class="form-label">Kode Booking</label>
             <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
@@ -150,12 +159,14 @@
     let classTypeID = $(this).data('class-type-id');
     let scheduleDate = $(this).data('schedule-date');
     let scheduleTime = $(this).data('schedule-time');
+    let scheduleDetailID = $(this).data('schedule-detail-id');
     let scheduleDetailQuota = $(this).data('schedule-detail-quota');
 
     $('.schedule-title').html(title);
     $('.schedule-time').html(scheduleTime);
     $('.schedule-day').html(scheduleDate);
     $('.kuota-left').html(scheduleDetailQuota);
+    $('.schedule-detail-input').val(scheduleDetailID);
 
     $.ajax({
         url:`/getPackagesByClassTypeID`,

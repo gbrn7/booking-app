@@ -13,6 +13,7 @@ class PackageTransaction extends Model
         "class_type_name",
         "customer_name",
         "transaction_code",
+        "price",
         "phone_num",
         "email",
         "transaction_code",

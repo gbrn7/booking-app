@@ -22,7 +22,7 @@
 
 </head>
 
-<body class="d-flex flex-column justify-content-between">
+<body>
   {{-- Sweet Alert --}}
   @include('sweetalert::alert')
 
