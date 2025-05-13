@@ -16,12 +16,27 @@ class ClassTypeSeeder extends Seeder
         ClassType::insert([
             [
                 'name' => "Pilates",
+                'group_class_type_id' => 1,
+            ],
+            [
+                'name' => "Pilates Privat",
+                'group_class_type_id' => 2,
             ],
             [
                 'name' => "Aerial",
+                'group_class_type_id' => 1,
+            ],
+            [
+                'name' => "Aerial Privat",
+                'group_class_type_id' => 2,
             ],
             [
                 'name' => "Yoga",
+                'group_class_type_id' => 1,
+            ],
+            [
+                'name' => "Yoga Privat",
+                'group_class_type_id' => 2,
             ],
         ]);
     }

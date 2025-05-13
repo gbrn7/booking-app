@@ -22,7 +22,7 @@ class ClassTypeResource extends Resource
 
     protected static ?string $modelLabel = 'Jenis Kelas';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
@@ -32,6 +32,11 @@ class ClassTypeResource extends Resource
                     ->required()
                     ->maxLength(255)
                     ->label('Nama'),
+                Forms\Components\Select::make('group_class_type_id')
+                    ->required()
+                    ->relationship(name: 'groupClassType', titleAttribute: 'name')
+                    ->preload()
+                    ->label('Tipe Kelas'),
             ]);
     }
 
@@ -45,12 +50,15 @@ class ClassTypeResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->searchable()->label('Nama'),
+                Tables\Columns\TextColumn::make('groupClassType.name')->label('Tipe Kelas'),
                 Tables\Columns\TextColumn::make('classes_count')
                     ->label('Jumlah Kelas')
                     ->counts('classes'),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('group_class_type_id')
+                    ->relationship(name: 'groupClassType', titleAttribute: 'name')
+                    ->label('Tipe Kelas'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

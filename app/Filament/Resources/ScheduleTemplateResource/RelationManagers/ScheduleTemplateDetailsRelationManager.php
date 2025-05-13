@@ -25,12 +25,12 @@ class ScheduleTemplateDetailsRelationManager extends RelationManager
                 Forms\Components\Select::make('class_id')
                     ->required()
                     ->options(function () {
-                        return Classes::with(['classType', 'groupClassType'])
+                        return Classes::with('classType.groupClassType')
                             ->get()
-                            ->mapWithKeys(function ($class) {
+                            ->mapWithKeys(function ($classes) {
                                 return [
-                                    $class->id => $class->name . ' - ' . $class->groupClassType->name . ' - ' .
-                                        $class->classType->name
+                                    $classes->id => $classes->name . ' - ' . $classes->classType->name . ' - ' .
+                                        $classes->classType->groupClassType->name
                                 ];
                             });
                     })
@@ -55,8 +55,8 @@ class ScheduleTemplateDetailsRelationManager extends RelationManager
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('classes.name')->label('Nama Kelas'),
-                Tables\Columns\TextColumn::make('classes.groupClassType.name')->label('Tipe Kelas'),
                 Tables\Columns\TextColumn::make('classes.classType.name')->label('Jenis Kelas'),
+                Tables\Columns\TextColumn::make('classes.classType.groupClassType.name')->label('Tipe Kelas'),
                 Tables\Columns\TextColumn::make('classes.instructure_name')->label('Nama Instruktur'),
                 Tables\Columns\TextColumn::make('quota')->label('Kuota'),
                 Tables\Columns\TextColumn::make('schedule_time')->label('Jam')->dateTime('H:i'),

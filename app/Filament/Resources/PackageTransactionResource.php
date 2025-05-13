@@ -37,11 +37,13 @@ class PackageTransactionResource extends Resource
                 Forms\Components\Select::make('package_id')
                     ->required()
                     ->options(function () {
-                        return Package::with('classes')
+                        return Package::with('classType.groupClassType')
                             ->get()
                             ->mapWithKeys(function ($package) {
                                 return [
-                                    $package->id => $package->classes->name . ' - ' . $package->number_of_session . 'x Sesi - IDR ' . number_format($package->price, 0, ".", ".") . " - Valid untuk " . $package->duration . " " . $package->localDurationUnit() . " Setelah kelas pertama"
+                                    $package->id => $package->classType->name . ' - ' .
+                                        $package->classType->groupClassType->name . ' - ' .
+                                        $package->number_of_session . 'x Sesi - IDR ' . number_format($package->price, 0, ".", ".") . " - Valid untuk " . $package->duration . " " . $package->localDurationUnit() . " Setelah kelas pertama"
                                 ];
                             });
                     })
@@ -79,12 +81,11 @@ class PackageTransactionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('class_name')->label('Nama Kelas'),
+                Tables\Columns\TextColumn::make('class_type_name')->label('Nama Tipe Kelas'),
                 Tables\Columns\TextColumn::make('customer_name')->label('Nama Member'),
                 Tables\Columns\TextColumn::make('phone_num')->label('Nomor Wa'),
                 Tables\Columns\TextColumn::make('number_of_session')->label('Jumlah Sesi'),
                 Tables\Columns\TextColumn::make('number_of_session_left')->label('Sisa Sesi'),
-                Tables\Columns\TextColumn::make('instructure_name')->label('Nama Instruktur'),
                 Tables\Columns\TextColumn::make('redeem_code')->label('Kode Redeem'),
                 Tables\Columns\TextColumn::make('valid_until')->label('Kadaluarsa')->default('-'),
             ])

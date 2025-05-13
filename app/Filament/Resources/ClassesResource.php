@@ -3,9 +3,8 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ClassesResource\Pages;
-use App\Filament\Resources\ClassesResource\RelationManagers;
 use App\Models\Classes;
-use App\Models\PackageSchedule;
+use App\Models\ClassType;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
@@ -13,8 +12,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 
@@ -29,7 +26,7 @@ class ClassesResource extends Resource
 
     protected static ?string $modelLabel = 'Kelas';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
@@ -41,15 +38,18 @@ class ClassesResource extends Resource
                     ->label('Nama'),
                 Forms\Components\Select::make('class_type_id')
                     ->required()
-                    ->relationship(name: 'classType', titleAttribute: 'name')
+                    ->options(function () {
+                        return ClassType::with('groupClassType')
+                            ->get()
+                            ->mapWithKeys(function ($classType) {
+                                return [
+                                    $classType->id => $classType->name . ' - ' . $classType->groupClassType->name
+                                ];
+                            });
+                    })
                     ->searchable()
                     ->preload()
                     ->label('Jenis Kelas'),
-                Forms\Components\Select::make('group_class_type_id')
-                    ->required()
-                    ->relationship(name: 'groupClassType', titleAttribute: 'name')
-                    ->preload()
-                    ->label('Tipe Kelas'),
                 Forms\Components\TextInput::make('instructure_name')
                     ->required()
                     ->maxLength(255)
@@ -63,7 +63,6 @@ class ClassesResource extends Resource
             ->schema([
                 TextEntry::make('name')->label('Nama'),
                 TextEntry::make('classType.name')->label('Jenis Kelas'),
-                TextEntry::make('groupClassType.name')->label('Tipe Kelas'),
                 TextEntry::make('instructure_name')->label('Nama Instruktur'),
             ]);
     }
@@ -80,16 +79,12 @@ class ClassesResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')->searchable()->label('Nama'),
                 Tables\Columns\TextColumn::make('classType.name')->label('Jenis Kelas'),
-                Tables\Columns\TextColumn::make('groupClassType.name')->label('Tipe Kelas'),
                 Tables\Columns\TextColumn::make('instructure_name')->searchable()->label('Nama Instruktur'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('class_type_id')
                     ->relationship(name: 'classType', titleAttribute: 'name')
                     ->label('Jenis Kelas'),
-                Tables\Filters\SelectFilter::make('group_class_type_id')
-                    ->relationship(name: 'groupClassType', titleAttribute: 'name')
-                    ->label('Tipe Kelas'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

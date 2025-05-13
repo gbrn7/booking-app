@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('packages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('class_id')->constrained('classes');
+            $table->foreignId('class_type_id')->constrained('class_types');
             $table->integer('number_of_session');
             $table->float('price');
             $table->boolean('is_trial')->default(false);

@@ -26,14 +26,12 @@ class CreatePackageTransaction extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $package = Package::with(['classes.groupClassType', 'classes.classType'])->find($data['package_id']);
+        $package = Package::with('classType.groupClassType')->find($data['package_id']);
         $collectionData = collect($data);
         $mergedData = $collectionData->merge($package);
-        $mergedData->put("class_name", $package->classes->name);
+        $mergedData->put("class_type_name", $package->classType->name);
         $mergedData->put("number_of_session_left", $package->number_of_session);
-        $mergedData->put("group_class_type", $package->classes->groupClassType->name);
-        $mergedData->put("instructure_name", $package->classes->instructure_name);
-        $mergedData->put("class_type", $package->classes->classType->name);
+        $mergedData->put("group_class_type", $package->classType->groupClassType->name);
         $mergedData->put("transaction_code", Str::random(12));
         $mergedData->put("redeem_code", Str::random(12));
 

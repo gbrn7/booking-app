@@ -15,7 +15,7 @@ class PackagesSeeder extends Seeder
     {
         Package::insert(
             [
-                "class_id" => 1,
+                "class_type_id" => 1,
                 "number_of_session" => 2,
                 "price" => 200000,
                 "is_trial" => false,
@@ -23,11 +23,11 @@ class PackagesSeeder extends Seeder
                 "duration_unit" => 'week',
             ],
             [
-                "class_id" => 1,
-                "number_of_session" => 2,
-                "price" => 200000,
-                "is_trial" => false,
-                "duration" => 1,
+                "class_type_id" => 1,
+                "number_of_session" => 5,
+                "price" => 300000,
+                "is_trial" => true,
+                "duration" => 3,
                 "duration_unit" => 'week',
             ],
         );

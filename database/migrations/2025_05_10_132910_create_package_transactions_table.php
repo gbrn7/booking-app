@@ -15,16 +15,14 @@ return new class extends Migration
             $table->id();
             $table->foreignId('package_id')->constrained('packages', 'id');
             $table->string('customer_name');
-            $table->string('class_name');
+            $table->string('class_type_name');
             $table->string('phone_num');
             $table->string('email')->nullable();
             $table->string('transaction_code');
             $table->enum('payment_status', ['pending', 'failure', 'success']);
-            $table->string('instructure_name');
             $table->string('number_of_session');
             $table->string('number_of_session_left');
             $table->string('group_class_type');
-            $table->string('class_type');
             $table->boolean('is_trial');
             $table->date('valid_until')->nullable();
             $table->string('redeem_code');

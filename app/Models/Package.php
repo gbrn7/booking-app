@@ -12,7 +12,7 @@ class Package extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        "class_id",
+        "class_type_id",
         "number_of_session",
         "price",
         "is_trial",
@@ -20,9 +20,9 @@ class Package extends Model
         "duration_unit",
     ];
 
-    public function classes(): BelongsTo
+    public function classType(): BelongsTo
     {
-        return $this->belongsTo(Classes::class, 'class_id');
+        return $this->belongsTo(ClassType::class, 'class_type_id');
     }
 
     public function packageTransaction(): HasMany

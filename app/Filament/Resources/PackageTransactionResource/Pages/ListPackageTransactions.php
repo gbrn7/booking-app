@@ -14,7 +14,8 @@ class ListPackageTransactions extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-                ->label('Tambah Member'),
+                ->label('Tambah Member')
+                ->successRedirectUrl(route('filament.admin.resources.package-transactions.index')),
         ];
     }
 }

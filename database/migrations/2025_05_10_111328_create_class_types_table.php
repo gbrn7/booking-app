@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('class_types', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('group_class_type_id')->constrained('group_class_types');
             $table->string('name');
             $table->timestamps();
             $table->softDeletes();

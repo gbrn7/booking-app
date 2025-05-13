@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ScheduleResource\RelationManagers;
 
+use App\Models\Classes;
 use App\Models\ScheduleTemplate;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -21,7 +22,16 @@ class ScheduleDetailsRelationManager extends RelationManager
             ->schema([
                 Forms\Components\Select::make('class_id')
                     ->required()
-                    ->relationship(name: 'classes', titleAttribute: 'name')
+                    ->options(function () {
+                        return Classes::with('classType.groupClassType')
+                            ->get()
+                            ->mapWithKeys(function ($classes) {
+                                return [
+                                    $classes->id => $classes->name . ' - ' . $classes->classType->name . ' - ' .
+                                        $classes->classType->groupClassType->name
+                                ];
+                            });
+                    })
                     ->searchable()
                     ->preload()
                     ->label('Kelas'),
@@ -43,8 +53,8 @@ class ScheduleDetailsRelationManager extends RelationManager
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('classes.name')->label('Nama Kelas'),
-                Tables\Columns\TextColumn::make('classes.groupClassType.name')->label('Tipe Kelas'),
                 Tables\Columns\TextColumn::make('classes.classType.name')->label('Jenis Kelas'),
+                Tables\Columns\TextColumn::make('classes.classType.groupClassType.name')->label('Tipe Kelas'),
                 Tables\Columns\TextColumn::make('classes.instructure_name')->label('Nama Instruktur'),
                 Tables\Columns\TextColumn::make('quota')->label('Kuota'),
                 Tables\Columns\TextColumn::make('schedule_time')->label('Jam')->dateTime('H:i'),
@@ -56,7 +66,8 @@ class ScheduleDetailsRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
-                    ->label('Tambah Detail Jadwal'),
+                    ->label('Tambah Detail Jadwal')
+                    ->modalHeading('Tambah Detail Jadwal'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

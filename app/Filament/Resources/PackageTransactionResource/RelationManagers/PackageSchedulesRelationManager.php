@@ -53,7 +53,7 @@ class PackageSchedulesRelationManager extends RelationManager
                         function (Get $get) {
                             return ScheduleDetail::query()
                                 ->where('schedule_id', $get('schedule_id'))
-                                ->where('class_id', Package::find($this->ownerRecord->package_id)->class_id)
+                                ->whereRelation('classes', 'class_type_id', Package::with('classType')->find($this->ownerRecord->package_id)->classType->id)
                                 ->where('quota', '>', 0)
                                 ->get()
                                 ->mapWithKeys(function ($scheduleDetail) {
@@ -81,6 +81,12 @@ class PackageSchedulesRelationManager extends RelationManager
                     ->label('Hari/Tanggal'),
                 Tables\Columns\TextColumn::make('scheduleDetail.FormattedTime')
                     ->label('Jam'),
+                Tables\Columns\TextColumn::make('scheduleDetail.classes.name')
+                    ->label('Kelas'),
+                Tables\Columns\TextColumn::make('scheduleDetail.classes.classType.name')
+                    ->label('Jenis Kelas'),
+                Tables\Columns\TextColumn::make('scheduleDetail.classes.classType.groupClassType.name')
+                    ->label('Tipe Kelas'),
             ])
             ->filters([
                 //
