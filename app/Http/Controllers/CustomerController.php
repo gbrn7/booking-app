@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
+use Midtrans\Notification;
 use Midtrans\Snap;
 
 class CustomerController extends Controller
@@ -226,7 +227,7 @@ class CustomerController extends Controller
     {
         \Midtrans\Config::$isProduction = (bool) env('MIDTRANS_IS_PRODUCTION');
         \Midtrans\Config::$serverKey = env('MIDTRANS_SERVER_KEY');;
-        $notif = new \Midtrans\Notification();
+        $notif = new Notification();
 
         $transactionStatus = $notif->transaction_status;
         $transactionCode = $notif->order_id;
