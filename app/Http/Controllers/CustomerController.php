@@ -219,6 +219,8 @@ class CustomerController extends Controller
             ]
         );
         $scheduleDetail->decrement('quota');
+
+        return redirect()->route('index')->with('success', 'Redeem berhasil!');
     }
 
     public function handlerWebhook()
