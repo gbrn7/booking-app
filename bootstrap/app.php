@@ -12,7 +12,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->validateCsrfTokens(
-            except: ['api/webhook'],
+            except: ['/api/webhook'],
         )->web(append: [
             \RealRashid\SweetAlert\ToSweetAlert::class,
         ]);
