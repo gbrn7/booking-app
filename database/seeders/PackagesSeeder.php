@@ -22,6 +22,14 @@ class PackagesSeeder extends Seeder
                 "duration" => 1,
                 "duration_unit" => 'week',
             ],
+            [
+                "class_id" => 1,
+                "number_of_session" => 2,
+                "price" => 200000,
+                "is_trial" => false,
+                "duration" => 1,
+                "duration_unit" => 'week',
+            ],
         );
     }
 }

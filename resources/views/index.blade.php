@@ -7,7 +7,6 @@
 @endsection
 
 @section('body')
-
 <section class="body-wrapper container mt-4">
   <div class="container d-flex flex-column align-items-center gap-4">
     <div class="col-12 img-wrapper">
@@ -31,7 +30,8 @@
     @endif
 
     <div class="cta-wrapper col-12 d-flex justify-content-center">
-      <a href="schedule.html" class="text-center p-2 py-2 text-decoration-none rounded-3 btn-book text-white">Booking
+      <a href={{route('schedule')}}
+        class="text-center p-2 py-2 text-decoration-none rounded-3 btn-book text-white">Booking
         Sekarang</a>
     </div>
     <!-- contact -->

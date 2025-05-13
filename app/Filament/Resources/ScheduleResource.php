@@ -39,6 +39,7 @@ class ScheduleResource extends Resource
                     ->required()
                     ->label('Hari/Tanggal')
                     ->locale('id')
+                    ->unique()
                     ->displayFormat('l, d F Y')
                     ->native(false),
                 Forms\Components\Select::make('template_id')

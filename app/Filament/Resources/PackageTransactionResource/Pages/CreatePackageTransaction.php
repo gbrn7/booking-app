@@ -49,7 +49,10 @@ class CreatePackageTransaction extends CreateRecord
         $newData = collect($data);
 
         if ($package->is_trial) {
-            $data = PackageTransaction::where('phone_num', $newData->get('phone_num'))->where('package_id', $newData->get('package_id'))->first();
+            $data = PackageTransaction::where('phone_num', $newData->get('phone_num'))
+                ->where('package_id', $newData->get('package_id'))
+                ->where('payment_status', 'success')
+                ->first();
 
             if ($data) {
                 Notification::make()

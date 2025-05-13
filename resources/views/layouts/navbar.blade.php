@@ -10,12 +10,15 @@
       </a>
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="index.html">
+          <a @class(['nav-link', 'active'=> Route::is('index')]) aria-current="page"
+            href="{{route('index')}}">
             <i class="ri-home-line"></i>
             Beranda</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="schedule.html">
+          <a @class(['nav-link', 'active'=> Route::is('schedule')])
+            class="nav-link"
+            href="{{route('schedule')}}">
             <i class="ri-calendar-line"></i>
             Jadwal Kelas</a>
         </li>

@@ -23,7 +23,7 @@ class ClassesSeeder extends Seeder
             [
                 'group_class_type_id' => 2,
                 'class_type_id' => 1,
-                'name' => "Aerial Hammock",
+                'name' => "Aerial Hammock Privat",
                 'instructure_name' => "Firli",
             ],
         ]);
