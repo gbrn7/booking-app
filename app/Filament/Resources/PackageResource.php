@@ -64,7 +64,7 @@ class PackageResource extends Resource
                     ->required()
                     ->label('Durasi Valid')
                     ->numeric(),
-                Forms\Components\Select::make('unit')
+                Forms\Components\Select::make('duration_unit')
                     ->options([
                         'day' => 'Hari',
                         'week' => 'Minggu',
@@ -80,12 +80,12 @@ class PackageResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('classType.name')->searchable()->label('Nama'),
+                Tables\Columns\TextColumn::make('classType.name')->searchable()->label('Jenis Kelas'),
                 Tables\Columns\TextColumn::make('classType.groupClassType.name')->label('Tipe Kelas'),
                 Tables\Columns\TextColumn::make('number_of_session')->label('Jumlah Sesi'),
                 Tables\Columns\TextColumn::make('price')
-                    ->label('Harga')
-                    ->money('IDR'),
+                    ->label('Harga (Rp)')
+                    ->numeric(locale: 'nl'),
                 Tables\Columns\IconColumn::make('is_trial')
                     ->label('Status Trial')
                     ->boolean()

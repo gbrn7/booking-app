@@ -27,13 +27,14 @@
             <div class="day-title fw-semibold">{{$schedule->FormattedDate}}</div>
             <div class="schedule-box-wrapper row row-gap-1">
               @foreach ($schedule->scheduleDetails as $scheduleDetail)
-              @if ($scheduleDetail->classes->group_class_type_id == $groupTypeID)
+              @if ($scheduleDetail->classes->classType->group_class_type_id == $groupTypeID)
               <a class="col-lg-3 col-6 py-1 rounded text-decoration-none text-black schedule-box"
-                data-class-id={{$scheduleDetail->classes->id}}
+                data-class-type-id={{$scheduleDetail->classes->classType->id}}
                 data-schedule-date="{{$schedule->FormattedDate}}"
                 data-schedule-time="{{$scheduleDetail->FormattedTime}}"
                 data-schedule-detail-quota={{$scheduleDetail->quota}}
-                data-title="{{$scheduleDetail->classes->name." - ".$scheduleDetail->classes->groupClassType->name." -
+                data-title="{{$scheduleDetail->classes->name." -
+                ".$scheduleDetail->classes->classType->groupClassType->name." -
                 By ". $scheduleDetail->classes->instructure_name}}"
                 data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
                 <div class="status-availability text-pink fw-medium">
@@ -41,7 +42,8 @@
                 </div>
                 <div class="time fw-medium">{{$scheduleDetail->FormattedTime}}</div>
                 <div class="schedule-desc fw-light">
-                  {{$scheduleDetail->classes->name}} - Kelas {{$scheduleDetail->classes->groupClassType->name}} - By
+                  {{$scheduleDetail->classes->name}} - Kelas
+                  {{$scheduleDetail->classes->classType->groupClassType->name}} - By
                   {{$scheduleDetail->classes->instructure_name}}
                 </div>
               </a>
@@ -98,26 +100,6 @@
               <div class="spinner-border text-secondary" role="status">
                 <span class="sr-only"></span>
               </div>
-              {{-- <div class="packet-card col-5 border py-2 px-2 rounded-2">
-                <input type="radio" name="package" value="basic" />
-                <div class="title fw-medium">1x Pilates Reformer</div>
-                <div class="price mt-2">Rp.80.000</div>
-              </div>
-              <div class="packet-card col-5 border py-2 px-2 rounded-2">
-                <input type="radio" name="package" value="basic" />
-                <div class="title fw-medium">3x Pilates Reformer</div>
-                <div class="price mt-2">Rp.200.000</div>
-              </div>
-              <div class="packet-card col-5 border py-2 px-2 rounded-2">
-                <input type="radio" name="package" value="basic" />
-                <div class="title fw-medium">5x Pilates Reformer</div>
-                <div class="price mt-2">Rp.300.000</div>
-              </div>
-              <div class="packet-card col-5 border py-2 px-2 rounded-2">
-                <input type="radio" name="package" value="basic" />
-                <div class="title fw-medium">10x Pilates Reformer</div>
-                <div class="price mt-2">Rp.550.000</div>
-              </div> --}}
             </div>
           </div>
 
@@ -165,7 +147,7 @@
     $(".packget-card-wrapper").empty();
 
     let title = $(this).data('title');
-    let ClassID = $(this).data('class-id');
+    let classTypeID = $(this).data('class-type-id');
     let scheduleDate = $(this).data('schedule-date');
     let scheduleTime = $(this).data('schedule-time');
     let scheduleDetailQuota = $(this).data('schedule-detail-quota');
@@ -176,10 +158,10 @@
     $('.kuota-left').html(scheduleDetailQuota);
 
     $.ajax({
-        url:`/getPackagesByClassID`,
+        url:`/getPackagesByClassTypeID`,
         type:"Get",
         data: {
-            class_id: ClassID,
+            class_type_id: classTypeID,
         },
         dataType:"json",
         beforeSend: function() {
@@ -190,18 +172,55 @@
          },
         success:function(data){
           $(".packget-card-wrapper").empty();
+
           $.each(data, function(key, value){
+            if(value.duration_unit == 'day'){
+              value.duration_unit = 'hari'
+            }else if(value.duration_unit == 'week'){
+              value.duration_unit = 'minggu'
+            }else if(value.duration_unit == 'month'){
+              value.duration_unit = 'bulan'
+            }else{
+              value.duration_unit = 'tahun'
+            }
+
             $(".packget-card-wrapper").append(`
               <div class="packet-card col-5 border py-2 px-2 rounded-2">
                 <input type="radio" name="package_id" value=${value.id} />
-                <div class="title fw-medium">${value.number_of_session}x ${value.classes.name}</div>
+                <div class="title fw-medium">${value.number_of_session}x ${value.class_type.name}</div>
                 <div class="price mt-2">Rp.${value.price.toLocaleString('de-DE')}</div>
+                ${value.number_of_session>1 ? `<div class="expired-desc text-secondary mt-2 fw-light">* Kode Booking Aktif selama ${value.duration} ${value.duration_unit}</div>` : ''}
               </div>
               `);
           });
+
+          if(data.length > 0){
+          $(".packet-card").click(function () {
+          // Find and check the radio inside the clicked card
+          const radio = $(this).find('input[type="radio"]');
+          if (!radio.prop("checked")) {
+            radio.prop("checked", true);
+          }
+
+          // Uncheck radios in other cards
+          $(".packet-card")
+            .not(this)
+            .removeClass("active")
+            .find('input[type="radio"]')
+            .prop("checked", false);
+
+          $(this).addClass("active");
+        });
+          }
         },
       });
 
     });
+</script>
+
+<script>
+  $(document).ready(function () {
+
+      });
 </script>
 @endpush

@@ -94,3 +94,7 @@ body {
 .offcanvas .kuota-left{
   font-size: 13px;
 }
+
+.offcanvas .expired-desc{
+  font-size: 11.5px;
+}

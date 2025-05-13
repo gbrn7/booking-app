@@ -32,10 +32,9 @@ class CustomerController extends Controller
             $groupTypeID = GroupClassType::where('name', 'privat')->first()->id;
         }
 
-        $schedules = Schedule::with('scheduleDetails.classes.groupClassType')
+        $schedules = Schedule::with('scheduleDetails.classes.classType.groupClassType')
             ->where('date', '>=', Carbon::today())
             ->get();
-
 
         if (!$request->private_schedule) {
             return view('schedule-first', [
@@ -50,11 +49,13 @@ class CustomerController extends Controller
         ]);
     }
 
-    public function getPackagesByClassID(Request $request)
+    public function getPackagesByClassTypeID(Request $request)
     {
-        if ($request->class_id) {
-            $packages = Package::with('classes')
-                ->where('class_id', $request->class_id)->get();
+        if ($request->class_type_id) {
+            $packages = Package::with('classType')
+                ->where('class_type_id', $request->class_type_id)
+                ->get();
+
             return response()->json($packages);
         }
 
