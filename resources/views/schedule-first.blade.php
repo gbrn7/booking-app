@@ -137,7 +137,7 @@
           @method('put')
           <div class="mb-1 col-12 mt-2">
             <label for="exampleInputEmail1" class="form-label">Kode Booking</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
             <div class="form-text">Masukkan kode booking dari admin</div>
           </div>
           <button type="submit" class="bg-pink text-white w-100 p-2 rounded border-0 btn-submit-book fw-medium mt-2 ">
