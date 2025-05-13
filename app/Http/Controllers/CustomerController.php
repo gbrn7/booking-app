@@ -125,19 +125,19 @@ class CustomerController extends Controller
 
         $newTransaction = PackageTransaction::create($data);
 
-        $newPackageSchedule = PackageSchedule::create(
+        PackageSchedule::create(
             [
                 "package_transaction_id" => $newTransaction->id,
                 "schedule_detail_id" => $scheduleDetail->id
             ]
         );
 
-        $midtransRedirectUrl = $this->midtransTransaction($newTransaction, $newPackageSchedule);
+        $midtransRedirectUrl = $this->midtransTransaction($newTransaction);
 
         return redirect($midtransRedirectUrl);
     }
 
-    public function midtransTransaction(PackageTransaction $transaction, PackageSchedule $packageSchedule)
+    public function midtransTransaction(PackageTransaction $transaction)
     {
         // Set your Merchant Server Key
         \Midtrans\Config::$serverKey = env('MIDTRANS_SERVER_KEY');
@@ -150,8 +150,6 @@ class CustomerController extends Controller
 
         $params = array(
             'transaction_details' => array(
-                'transaction_id' => $transaction->id,
-                'package_schedule_id' => $packageSchedule->id,
                 'order_id' => $transaction->transaction_code,
                 'gross_amount' => $transaction->price,
             ),
@@ -231,8 +229,6 @@ class CustomerController extends Controller
 
         $transactionStatus = $notif->transaction_status;
         $transactionCode = $notif->order_id;
-        $transactionID = $notif->transaction_id;
-        $packageTransactionID = $notif->package_schedule_id;
 
         $status = '';
 
@@ -250,17 +246,27 @@ class CustomerController extends Controller
             $status = 'pending';
         }
 
-        $transaction = PackageTransaction::where('transaction_code', $transactionCode)
-            ->where('id', $transactionID)
-            ->first();
 
-        $transaction->update(
-            [
-                'payment_status' => $status,
-                'number_of_session_left' => ($transaction->number_of_session - 1),
-                'reddem_code' => Str::random(12)
-            ]
-        );
-        ScheduleDetail::find($packageTransactionID)->decrement('quota');
+        $transaction = PackageTransaction::where('transaction_code', $transactionCode)
+            ->orderBy('id', 'desc')->first();
+
+        if ($status == 'success') {
+            $packageSchedule = PackageSchedule::where('package_transaction_id', $transaction->id)->orderBy('id', 'desc')->first();
+
+            $transaction->update(
+                [
+                    'payment_status' => $status,
+                    'number_of_session_left' => ($transaction->number_of_session - 1),
+                    'reddem_code' => Str::random(12)
+                ]
+            );
+            ScheduleDetail::find($packageSchedule->schedule_detail_id)->decrement('quota');
+        } else {
+            $transaction->update(
+                [
+                    'payment_status' => $status,
+                ]
+            );
+        }
     }
 }
