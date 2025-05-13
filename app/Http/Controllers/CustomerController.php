@@ -257,7 +257,7 @@ class CustomerController extends Controller
                 [
                     'payment_status' => $status,
                     'number_of_session_left' => ($transaction->number_of_session - 1),
-                    'reddem_code' => Str::random(12)
+                    'redeem_code' => Str::random(12)
                 ]
             );
             ScheduleDetail::find($packageSchedule->schedule_detail_id)->decrement('quota');
