@@ -172,7 +172,7 @@ class CustomerController extends Controller
     {
         $request->validate([
             'schedule_detail_id' => 'required',
-            'redeem_code' => 'required|min:12',
+            'redeem_code' => 'required',
         ], [
             'redeem_code.required' => 'Kode redeem wajib ada',
             'redeem_code.required' => 'Kode redeem minimal ada :min karakter',
