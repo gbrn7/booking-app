@@ -83,7 +83,10 @@ class PackageTransactionResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('class_type_name')->label('Nama Tipe Kelas'),
                 Tables\Columns\TextColumn::make('transaction_code')->label('Kode Transaksi'),
-                Tables\Columns\TextColumn::make('redeem_code')->label('Kode Redeem'),
+                Tables\Columns\TextColumn::make('redeem_code')->copyable()
+                    ->copyMessage('Kode reedem telah di salin')
+                    ->copyMessageDuration(1500)
+                    ->label('Kode Redeem'),
                 Tables\Columns\TextColumn::make('customer_name')->label('Nama Member'),
                 Tables\Columns\TextColumn::make('phone_num')->label('Nomor Wa'),
                 Tables\Columns\TextColumn::make('number_of_session')->label('Jumlah Sesi'),
