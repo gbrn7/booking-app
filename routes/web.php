@@ -17,4 +17,4 @@ Route::get('/book-class/success', function () {
 
 Route::put('/redeem-book-code', [CustomerController::class, 'redeemBookCode'])->name('redeem.book.code');
 
-Route::post('api/webhook', [CustomerController::class, 'handler']);
+Route::post('api/webhook', [CustomerController::class, 'handlerWebhook']);
