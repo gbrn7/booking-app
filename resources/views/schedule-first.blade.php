@@ -133,6 +133,7 @@
         <form method="post" action={{route('redeem.book.code')}} class="tab-pane fade document-link-wrapper"
           data-cy="wrapper-document-link" id="member-tab-pane" role="tabpanel" aria-labelledby="member-tab-pane"
           tabindex="0">
+          <input type="hidden" name="schedule_detail_id" class="schedule-detail-input">
           @csrf
           @method('put')
           <div class="mb-1 col-12 mt-2">
