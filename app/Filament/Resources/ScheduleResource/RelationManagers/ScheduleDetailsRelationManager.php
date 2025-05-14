@@ -16,6 +16,7 @@ class ScheduleDetailsRelationManager extends RelationManager
 {
     protected static string $relationship = 'scheduleDetails';
 
+
     public function form(Form $form): Form
     {
         return $form

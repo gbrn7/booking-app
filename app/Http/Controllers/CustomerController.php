@@ -103,18 +103,28 @@ class CustomerController extends Controller
 
         $package = Package::with('classType.groupClassType')->find($request->package_id);
 
+        if ($package->is_trial) {
+            if (PackageTransaction::where('phone_num', $request->phone_num)->where('payment_status', 'success')->exists()) {
+                return redirect()
+                    ->back()
+                    ->with('error', 'Anda hanya dapat daftar paket trial ini sebnyak satu kali');
+            }
+        }
+
         $data = $data->merge($scheduleDetail->toArray())->merge($package->toArray());
 
-        if ($scheduleDetail->duration_unit == 'day') {
-            $data['valid_until'] = Carbon::make($scheduleDetail->schedule->date)->addDay($scheduleDetail->duration);
-        } else if ($scheduleDetail->duration_unit == 'week') {
-            $data['valid_until'] = Carbon::make($scheduleDetail->schedule->date)->addWeek($scheduleDetail->duration);
-        } else if ($scheduleDetail->duration_unit == 'month') {
-            $data['valid_until'] = Carbon::make($scheduleDetail->schedule->date)->addMonth($scheduleDetail->duration);
-        } else if ($scheduleDetail->duration_unit == 'year') {
-            $data['valid_until'] = Carbon::make($scheduleDetail->schedule->date)->addYear($scheduleDetail->duration);
+        $scheduleDetailDate = $scheduleDetail->schedule->date;
+        $packageDuration = $package->duration;
+        if ($package->duration_unit == 'day') {
+            $data['valid_until'] = Carbon::make($scheduleDetailDate)->addDay($packageDuration);
+        } else if ($package->duration_unit == 'week') {
+            $data['valid_until'] = Carbon::make($scheduleDetailDate)->addWeek($packageDuration);
+        } else if ($package->duration_unit == 'month') {
+            $data['valid_until'] = Carbon::make($scheduleDetailDate)->addMonth($packageDuration);
+        } else if ($package->duration_unit == 'year') {
+            $data['valid_until'] = Carbon::make($scheduleDetailDate)->addYear($packageDuration);
         } else {
-            $data['valid_until'] = Carbon::make($scheduleDetail->schedule->date)->addWeek($scheduleDetail->duration);
+            $data['valid_until'] = Carbon::make($scheduleDetailDate)->addWeek($packageDuration);
         }
 
         $data = $data->toArray();
@@ -179,21 +189,59 @@ class CustomerController extends Controller
             'schedule_detail_id.required' => 'ID detail jadwal wajib ada',
         ]);
 
-        $packageTransaction = PackageTransaction::where('redeem_code', $request->redeem_code)->first();
+        $packageTransaction = PackageTransaction::with('package.classType')->where('redeem_code', $request->redeem_code)->first();
 
         if (!$packageTransaction) {
             return redirect()
                 ->back()
-                ->with('error', 'Kode redeem tidak ditemukan');
+                ->with('error', 'Kode redeem tidak valid');
         }
 
-        if ($packageTransaction->number_of_session <= 0) {
+        if ($packageTransaction->payment_status != 'success') {
+            return redirect()
+                ->back()
+                ->with('error', 'Status pembayaran booking ' . $packageTransaction->ConvertedPaymentStatus);
+        }
+
+        if ($packageTransaction->number_of_session_left <= 0) {
             return redirect()
                 ->back()
                 ->with('error', 'Kuota Member Habis');
         }
 
-        $scheduleDetail = ScheduleDetail::with('schedule')->find($request->schedule_detail_id);
+        $scheduleDetail = ScheduleDetail::with('classes.classType')->find($request->schedule_detail_id);
+
+        if ($packageTransaction->valid_until) {
+            if (Carbon::today()->greaterThan($packageTransaction->valid_until)) {
+                return redirect()
+                    ->back()
+                    ->with('error', 'Kode booking kadaluarsa');
+            }
+        } else {
+            if ($packageTransaction->number_of_session == $packageTransaction->number_of_session_left) {
+                $scheduleDetailDate = $scheduleDetail->schedule->date;
+            } else {
+                $packageSchedule = PackageSchedule::with('scheduleDetail.schedule')->where("package_transaction_id", $packageTransaction->id)->first();
+
+                $scheduleDetailDate = $packageSchedule->scheduleDetail->schedule->date;
+            }
+
+            $packageDuration = $packageTransaction->duration;
+
+            if ($packageTransaction->duration_unit == 'day') {
+                $data['valid_until'] = Carbon::make($scheduleDetailDate)->addDay($packageDuration);
+            } else if ($packageTransaction->duration_unit == 'week') {
+                $data['valid_until'] = Carbon::make($scheduleDetailDate)->addWeek($packageDuration);
+            } else if ($packageTransaction->duration_unit == 'month') {
+                $data['valid_until'] = Carbon::make($scheduleDetailDate)->addMonth($packageDuration);
+            } else if ($packageTransaction->duration_unit == 'year') {
+                $data['valid_until'] = Carbon::make($scheduleDetailDate)->addYear($packageDuration);
+            } else {
+                $data['valid_until'] = Carbon::make($scheduleDetailDate)->addWeek($packageDuration);
+            }
+        }
+
+
         if (!$scheduleDetail) {
             return redirect()
                 ->back()
@@ -206,6 +254,12 @@ class CustomerController extends Controller
                 ->with('error', 'Kuota Jadwal Habis');
         }
 
+        if ($packageTransaction->package->classType->id != $scheduleDetail->classes->classType->id) {
+            return redirect()
+                ->back()
+                ->with('error', 'Paket kelas ' . $packageTransaction->package->classType->name . ' anda tidak dapat digunakan untuk meredeem paket kelas ' . $scheduleDetail->classes->classType->name);
+        }
+
         PackageSchedule::create(
             [
                 "package_transaction_id" => $packageTransaction->id,
@@ -213,11 +267,10 @@ class CustomerController extends Controller
             ]
         );
 
-        $packageTransaction->update(
-            [
-                'number_of_session_left' => ($packageTransaction->number_of_session - 1),
-            ]
-        );
+        $data['number_of_session_left'] = ($packageTransaction->number_of_session_left - 1);
+
+        $packageTransaction->update($data);
+
         $scheduleDetail->decrement('quota');
 
         return redirect()->route('index')->with('success', 'Redeem berhasil!');

@@ -33,6 +33,21 @@ class PackageTransaction extends Model
         return $this->belongsTo(Package::class, 'package_id', 'id');
     }
 
+    public function getConvertedPaymentStatusAttribute()
+    {
+        switch ($this->payment_status) {
+            case 'success':
+                return 'Sukses';
+                break;
+            case 'failure':
+                return 'Gagal';
+                break;
+            default:
+                return 'Pending';
+                break;
+        }
+    }
+
     public function packageSchedules(): HasMany
     {
         return $this->hasMany(PackageSchedule::class, 'package_transaction_id', 'id');
