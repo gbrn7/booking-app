@@ -94,7 +94,7 @@
         </li>
       </ul>
       <div class="tab-content" id="myTabContent">
-        <form method="post" action={{route('book.class')}} class="tab-pane overview-wrapper fade show active"
+        <form method="post" action={{route('book.class')}} class="tab-pane overview-wrapper fade show active form-book"
           id="book-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
           @csrf
           <div class="packet-wrapper">
@@ -130,7 +130,7 @@
             </div>
           </div>
         </form>
-        <form method="post" action={{route('redeem.book.code')}} class="tab-pane fade document-link-wrapper"
+        <form method="post" action={{route('redeem.book.code')}} class="tab-pane fade document-link-wrapper form-reedem"
           data-cy="wrapper-document-link" id="member-tab-pane" role="tabpanel" aria-labelledby="member-tab-pane"
           tabindex="0">
           <input type="hidden" name="schedule_detail_id" class="schedule-detail-input">
@@ -142,7 +142,7 @@
               aria-describedby="emailHelp" />
             <div class="form-text">Masukkan kode booking dari admin</div>
           </div>
-          <button type="submit" class="bg-pink text-white w-100 p-2 rounded border-0 btn-submit-book fw-medium mt-2 ">
+          <button type="submit" class="bg-pink text-white w-100 p-2 rounded border-0 btn-submit-reedem fw-medium mt-2 ">
             Submit
           </button>
         </form>
@@ -229,11 +229,14 @@
       });
 
     });
-</script>
 
-<script>
-  $(document).ready(function () {
+    $('.form-book').on('submit', function (e) {
+      $('.btn-submit-book').prop('disabled', true); // Disable the button
+    });
 
-      });
+    $('.form-reedem').on('submit', function (e) {
+      $('.btn-submit-reedem').prop('disabled', true); // Disable the button
+    });
+
 </script>
 @endpush
