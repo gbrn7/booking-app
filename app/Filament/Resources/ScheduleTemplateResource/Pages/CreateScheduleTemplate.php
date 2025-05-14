@@ -14,4 +14,9 @@ class CreateScheduleTemplate extends CreateRecord
     {
         return 'Tambah Template Jadwal'; // Your custom page title
     }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

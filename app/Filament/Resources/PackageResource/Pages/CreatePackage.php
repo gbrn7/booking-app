@@ -14,4 +14,9 @@ class CreatePackage extends CreateRecord
     {
         return 'Tambah Paket Kelas'; // Your custom page title
     }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

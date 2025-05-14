@@ -14,4 +14,9 @@ class CreateClassType extends CreateRecord
     {
         return 'Tambah Jenis Kelas'; // Your custom page title
     }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

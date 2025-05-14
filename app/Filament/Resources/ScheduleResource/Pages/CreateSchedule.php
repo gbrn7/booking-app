@@ -14,4 +14,9 @@ class CreateSchedule extends CreateRecord
     {
         return 'Tambah Jadwal Kelas'; // Your custom page title
     }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

@@ -23,6 +23,10 @@ class CreatePackageTransaction extends CreateRecord
         return parent::getTableQuery()->where('payment_status', 'success');
     }
 
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {

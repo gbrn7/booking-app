@@ -13,9 +13,9 @@ class ListPackageTransactions extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()
-                ->label('Tambah Member')
-                ->successRedirectUrl(route('filament.admin.resources.package-transactions.index')),
+            // Actions\CreateAction::make()
+            //     ->label('Tambah Member')
+            //     ->successRedirectUrl(route('filament.admin.resources.package-transactions.index')),
         ];
     }
 }

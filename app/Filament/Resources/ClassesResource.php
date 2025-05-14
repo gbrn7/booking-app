@@ -79,6 +79,7 @@ class ClassesResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')->searchable()->label('Nama'),
                 Tables\Columns\TextColumn::make('classType.name')->label('Jenis Kelas'),
+                Tables\Columns\TextColumn::make('classType.groupClassType.name')->label('Tipe Kelas'),
                 Tables\Columns\TextColumn::make('instructure_name')->searchable()->label('Nama Instruktur'),
             ])
             ->filters([
