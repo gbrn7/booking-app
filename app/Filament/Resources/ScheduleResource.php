@@ -7,6 +7,7 @@ use App\Filament\Resources\ScheduleResource\RelationManagers;
 use App\Filament\Resources\SchedulesResource\Pages\ViewSchedules;
 use App\Models\Schedule;
 use App\Models\ScheduleTemplate;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Pages\EditRecord;
@@ -62,7 +63,10 @@ class ScheduleResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('date')->label('Hari/Tanggal')->dateTime('l, d F Y')->locale('id'),
+                Tables\Columns\TextColumn::make('date')->label('Hari/Tanggal')->formatStateUsing(
+                    fn($state) =>
+                    Carbon::parse($state)->locale('id')->translatedFormat('l, d F Y')
+                ),
                 Tables\Columns\TextColumn::make('schedule_details_count')
                     ->label('Jumlah Kelas')
                     ->counts('scheduleDetails'),
