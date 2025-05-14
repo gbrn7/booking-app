@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\ScheduleTemplateResource\RelationManagers;
 
 use App\Models\Classes;
+use App\Models\ScheduleTemplateDetail;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;

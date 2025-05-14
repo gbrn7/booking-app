@@ -21,6 +21,6 @@ class ScheduleTemplateDetail extends Model
 
     public function classes(): BelongsTo
     {
-        return $this->belongsTo(Classes::class, 'schedule_template_id');
+        return $this->belongsTo(Classes::class, 'class_id');
     }
 }

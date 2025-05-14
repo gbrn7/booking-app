@@ -62,7 +62,7 @@ class ScheduleResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('date')->label('Hari/Tanggal')->dateTime('l, d F Y'),
+                Tables\Columns\TextColumn::make('date')->label('Hari/Tanggal')->dateTime('l, d F Y')->locale('id'),
                 Tables\Columns\TextColumn::make('schedule_details_count')
                     ->label('Jumlah Kelas')
                     ->counts('scheduleDetails'),
