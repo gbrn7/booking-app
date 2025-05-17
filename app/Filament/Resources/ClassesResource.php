@@ -90,20 +90,20 @@ class ClassesResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()
-                    ->successNotification(
-                        Notification::make()
-                            ->success()
-                            ->title('Kelas Dihapus')
-                            ->body(
-                                'Data Kelas Berhasil Dihapus'
-                            )
-                    )
+                // Tables\Actions\DeleteAction::make()
+                //     ->successNotification(
+                //         Notification::make()
+                //             ->success()
+                //             ->title('Kelas Dihapus')
+                //             ->body(
+                //                 'Data Kelas Berhasil Dihapus'
+                //             )
+                //     )
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                // Tables\Actions\BulkActionGroup::make([
+                //     Tables\Actions\DeleteBulkAction::make(),
+                // ]),
             ])
             ->emptyStateHeading('Kelas tidak ditemukan');
     }
