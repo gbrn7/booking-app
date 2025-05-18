@@ -19,8 +19,19 @@ use Midtrans\Snap;
 
 class CustomerController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->order_id) {
+            $transaction = PackageTransaction::where('transaction_code', $request->order_id)
+                ->orderBy('id', 'desc')->first();
+
+            if ($transaction) {
+                if ($transaction->payment_status == 'success') {
+                    return redirect()->route('book.class.success');
+                }
+            }
+        }
+
         return view('index', [
             'galleryImages' => Gallery::all(),
         ]);
@@ -104,7 +115,7 @@ class CustomerController extends Controller
         $package = Package::with('classType.groupClassType')->find($request->package_id);
 
         if ($package->is_trial) {
-            if (PackageTransaction::where('phone_num', $request->phone_num)->where('payment_status', 'success')->exists()) {
+            if (PackageTransaction::where('package_id', $request->package_id)->where('phone_num', $request->phone_num)->where('payment_status', 'success')->exists()) {
                 return redirect()
                     ->back()
                     ->with('error', 'Anda hanya dapat daftar paket trial ini sebnyak satu kali');

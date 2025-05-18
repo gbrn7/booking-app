@@ -17,9 +17,9 @@ class DatabaseSeeder extends Seeder
             GroupClassTypeSeeder::class,
             ClassTypeSeeder::class,
             ClassesSeeder::class,
-            ScheduleSeeder::class,
-            ScheduleDetailSeeder::class,
-            PackagesSeeder::class,
+            // ScheduleSeeder::class,
+            // ScheduleDetailSeeder::class,
+            // PackagesSeeder::class,
         ]);
     }
 }

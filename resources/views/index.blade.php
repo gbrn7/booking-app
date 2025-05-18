@@ -35,7 +35,7 @@
         Sekarang</a>
     </div>
     <!-- contact -->
-    <div class="col-12 mb-4 btn-wrapper d-flex flex-wrap gap-2 justify-content-center mt-2">
+    <div class="col-12 mb-5 btn-wrapper d-flex flex-wrap gap-2 justify-content-center mt-2">
       <a href="https://g.co/kgs/KonV2mZ" target="_blank"
         class="location text-decoration-none text-white bg-grey p-2 col-12 col-lg-2 text-center rounded">
         <i class="text-pink ri-map-pin-fill"></i>

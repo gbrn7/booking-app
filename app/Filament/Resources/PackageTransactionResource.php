@@ -81,7 +81,8 @@ class PackageTransactionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('class_type_name')->label('Nama Tipe Kelas'),
+                Tables\Columns\TextColumn::make('class_type_name')->label('Jenis Kelas'),
+                Tables\Columns\TextColumn::make('group_class_type')->label('Tipe Kelas'),
                 Tables\Columns\TextColumn::make('transaction_code')->label('Kode Transaksi'),
                 Tables\Columns\TextColumn::make('redeem_code')->copyable()
                     ->copyMessage('Kode reedem telah di salin')
