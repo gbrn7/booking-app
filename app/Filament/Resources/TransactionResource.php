@@ -93,7 +93,7 @@ class TransactionResource extends Resource
                     ->label('Status Pembayaran'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 // Tables\Actions\BulkActionGroup::make([
