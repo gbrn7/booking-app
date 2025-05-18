@@ -23,6 +23,7 @@
         </div>
         <div class="schedule-list mt-3 d-flex flex-column gap-4">
           @foreach ($schedules as $schedule)
+          @if (count($schedule->scheduleDetails)>0)
           <div class="schedule-section">
             <div class="day-title fw-semibold">{{$schedule->FormattedDate}}</div>
             <div class="schedule-box-wrapper row row-gap-1">
@@ -52,6 +53,7 @@
               @endforeach
             </div>
           </div>
+          @endif
           @endforeach
         </div>
       </div>
